@@ -13,10 +13,8 @@ connectionData = {"command": "connect", "port": "/dev/ttyACM0", "baudrate": 1152
 
 
 def connectToPrinter():
-    connection = requests.post(_url("connection"), json=connectionData, headers=standardHeader)
-    if connection.status_code != 201:
-        raise ConnectionError("It wasn't possible to connect,  code {}".format(connection.status_code))
-    print("Connection successful")
+    return requests.post(_url("connection"), json=connectionData, headers=standardHeader, timeout=5)
+
 
 
 def modelSelection():
@@ -26,15 +24,13 @@ def modelSelection():
 def printModel(modelName):
     # o endereço passado deve ser do arquivo .gcode
     printData = {'command': 'select', 'print': True}
-    printing = requests.post(_url('files/local/{}'.format(modelName)), json=printData,
-                             headers=standardHeader)
-    # TODO colocar o if tal codigo raise tal coisa
+    url = _url('files/local/{}'.format(modelName))
+    return requests.post(url, json=printData, headers=standardHeader, timeout=5)
 
 
 def progressTracking():
-    progress = requests.get(_url('job'), headers=standardHeader)
-    for item in progress.json():
-        print("item: {}".format(item))
+    return requests.get(_url('job'), headers=standardHeader, timeout=5)
+
 
 
 def _url(path):
