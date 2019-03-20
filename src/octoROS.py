@@ -53,9 +53,10 @@ class interface:
 
 
 def main(args):
+    # Ros was not catching interrupt exceptions, so I had to disable signals and use the KeyboardInterrupt exception
     rospy.init_node('printerWatcher', anonymous=True, disable_signals=True)
     interf = interface()
-    interf.printAndGetStatus('Teste.gcode')
+    interf.printAndGetStatus('FlexiRexColor1.gcode')
 
 
 if __name__ == '__main__':
